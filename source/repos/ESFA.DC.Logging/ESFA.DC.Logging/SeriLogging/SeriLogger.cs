@@ -41,11 +41,14 @@ namespace ESFA.DC.Logging.SeriLogging
             {
                logger= ConsoleLoggerFactory.CreateLogger(_seriConfig);
             }
-               
+
+            
+
+
         }
         public SeriLogger(ApplicationLoggerSettings appConfig, ILogEventSink sink)
         {
-            _appLoggerSettings = appConfig;
+            //_appLoggerSettings = appConfig;
             _sink = sink;
             logger = GenericLoggerFactory.CreateLogger(_seriConfig,sink);
         }
@@ -63,7 +66,7 @@ namespace ESFA.DC.Logging.SeriLogging
         /// <returns></returns>
         public LoggerConfiguration ConfigureSerilog()
         {
-            
+
             //setup the configuartion
             var seriConfig = new LoggerConfiguration()
                     .Enrich.FromLogContext()
@@ -73,12 +76,36 @@ namespace ESFA.DC.Logging.SeriLogging
                     .Enrich.WithMachineName()
                     .Enrich.WithEnvironmentUserName() // not sure if this will be useful??
                     .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName);
-                    
-                    
+
+            switch (_appLoggerSettings.MinimumLogLevel)
+            {
+                case Enums.LogLevel.Verbose:
+                    seriConfig.MinimumLevel.Verbose();
+                    break;
+                case Enums.LogLevel.Debug:
+                    seriConfig.MinimumLevel.Debug();
+                    break;
+                case Enums.LogLevel.Information:
+                    seriConfig.MinimumLevel.Information();
+                    break;
+                case Enums.LogLevel.Warning:
+                    seriConfig.MinimumLevel.Warning();
+                    break;
+                case Enums.LogLevel.Error:
+                    seriConfig.MinimumLevel.Error();
+                    break;
+                case Enums.LogLevel.Fatal:
+                    seriConfig.MinimumLevel.Fatal();
+                    break;
+                default:
+                    seriConfig.MinimumLevel.Verbose();
+                    break;
+            }
+
             return seriConfig;
         }
 
-       
+
         #endregion
 
         #region Logger functions
@@ -103,6 +130,11 @@ namespace ESFA.DC.Logging.SeriLogging
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            logger.Dispose();
+        }
 
     }
 }

@@ -15,7 +15,8 @@ namespace TestConsole
         {
             var config = new ApplicationLoggerSettings();
             config.ApplicationName = "Test app";
-            config.ConnectionStringKey = "AuditLoggingConnectionString";
+            //config.ConnectionStringKey = "AuditLoggingConnectionString";
+            config.LoggerOutput = ESFA.DC.Logging.Enums.LogOutputDestination.Console;
 
             builder.RegisterType<SeriLogger>().As<ILogger>()
                  .WithParameter(new TypedParameter(typeof(ApplicationLoggerSettings), config));

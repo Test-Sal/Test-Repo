@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using ESFA.DC.Logging.Enums;
+using Serilog;
 using Serilog.Core;
 using System;
 
