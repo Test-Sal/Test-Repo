@@ -30,8 +30,8 @@ namespace ESFA.DC.Logging.SeriLogging
             _appLoggerSettings = appConfig;
             _seriConfig = ConfigureSerilog();
 
-            //Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
-            //Serilog.Debugging.SelfLog.Enable(Console.Error);
+            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+            Serilog.Debugging.SelfLog.Enable(Console.Error);
 
             if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
             {
