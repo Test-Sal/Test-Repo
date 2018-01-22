@@ -1,4 +1,5 @@
-﻿using ESFA.DC.Logging;
+﻿using Autofac;
+using ESFA.DC.Logging;
 using ESFA.DC.Logging.SeriLogging;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,32 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            var config = new ApplicationLoggerSettings();
-            config.ConnectionStringKey = "AuditLoggingConnectionString";
-            config.LoggerOutput = ESFA.DC.Logging.Enums.LogOutputDestination.SqlServer;
+
+            var builder = ConfigureBuilder();
+            var container = builder.Build();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                var logger = container.Resolve<ILogger>();
 
 
-            ILogger logger = new SeriLogger(config);
+                logger.LogDebug("some debug");
+                logger.LogInfo("test info {@builder}",builder);
+                logger.LogWarning("test warn");
+                logger.LogError("test error data {@container}",new Exception("exception occured"), container);
+            }
 
-            logger.LogError("test",null);
+
             Console.ReadLine();
 
+        }
+
+        private static ContainerBuilder ConfigureBuilder()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule<LoggerModule>();
+
+
+            return builder;
         }
     }
 }
