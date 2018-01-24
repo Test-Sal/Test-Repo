@@ -47,7 +47,7 @@ namespace ESFA.DC.Logging.SeriLogging
                          new DataColumn { DataType = typeof(string), ColumnName = "CallerName" },
                         new DataColumn { DataType = typeof(string), ColumnName = "SourceFile" },
                         new DataColumn { DataType = typeof(int), ColumnName = "LineNumber" },
-                        new DataColumn { DataType = typeof(string), ColumnName = "JobId" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "ContextId" },
 
                     };
 

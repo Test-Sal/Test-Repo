@@ -25,11 +25,14 @@ namespace ESFA.DC.Logging
                         [CallerFilePath] string sourceFile = "",
                         [CallerLineNumber] int lineNumber = 0,
                         params object[] parameters);
-        void LogInfo(string message,
+        void LogInfo(string message, 
                         [CallerMemberName] string callerName = "",
                         [CallerFilePath] string sourceFile = "",
                         [CallerLineNumber] int lineNumber = 0,
                         params object[] parameters);
+
+
         
+
     }
 }

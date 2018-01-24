@@ -126,7 +126,7 @@ namespace ESFA.DC.Logging.SeriLogging
             AddContext(callerName, sourceFile, lineNumber).Warning(message,parameters);
         }
 
-        public void LogDebug(string message, 
+        public void LogDebug(string message,
                             [CallerMemberName] string callerName = "",
                             [CallerFilePath] string sourceFile = "",
                             [CallerLineNumber] int lineNumber = 0, 
@@ -143,6 +143,7 @@ namespace ESFA.DC.Logging.SeriLogging
         {
             AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
+        
 
         #endregion
 
@@ -151,6 +152,7 @@ namespace ESFA.DC.Logging.SeriLogging
             return logger.ForContext("CallerName", callerName)
                   .ForContext("SourceFile", sourceFile)
                   .ForContext("LineNumber", lineNumber);
+                 
         }
         public void Dispose()
         {
