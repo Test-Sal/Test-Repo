@@ -24,12 +24,12 @@ namespace TestConsole
 
 
                 logger.LogDebug("some debug");
-                logger.LogInfo("some debug");
-                logger.LogWarning("some debug");
-                logger.LogError("some debug",null);
-                logger.LogInfo("test info {@builder}",builder);
+                logger.LogInfo("some info");
+                logger.LogWarning("some warn");
+                logger.LogError("some error",new Exception("there was an exception"));
+                logger.LogInfo("test info {@builder}", parameters:new object[]{builder});
                 //logger.LogWarning("test warn");
-                logger.LogError("test error data {@container}",new Exception("exception occured"), container);
+                //logger.LogError("test error data {@container}",new Exception("exception occured"), container);
             //}
 
             //Thread.Sleep(1000);

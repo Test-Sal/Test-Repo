@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using Serilog.Context;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
@@ -70,11 +71,8 @@ namespace ESFA.DC.Logging.SeriLogging
             //setup the configuartion
             var seriConfig = new LoggerConfiguration()
                     .Enrich.FromLogContext()
-                    .Enrich.WithProcessId()
-                    .Enrich.WithProcessName()
-                    .Enrich.WithThreadId()
-                    .Enrich.WithMachineName()
                     .Enrich.WithEnvironmentUserName() // not sure if this will be useful??
+                    .Enrich.With<EnvironmentEnricher>()
                     .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName);
 
             switch (_appLoggerSettings.MinimumLogLevel)
@@ -109,28 +107,51 @@ namespace ESFA.DC.Logging.SeriLogging
         #endregion
 
         #region Logger functions
-        public void LogError(string message, Exception ex, params object[] parameters )
+        public void LogError(string message, 
+                            Exception ex, 
+                            [CallerMemberName] string callerName = "", 
+                            [CallerFilePath] string sourceFile = "", 
+                            [CallerLineNumber] int lineNumber = 0, 
+                            params object[] parameters )
         {
-            logger.Error(ex,message,parameters);
+            AddContext(callerName, sourceFile, lineNumber).Error(ex,message,  parameters);
         }
         
-        public void LogWarning(string message, params object[] parameters)
+        public void LogWarning(string message, 
+                            [CallerMemberName] string callerName = "",
+                            [CallerFilePath] string sourceFile = "",
+                            [CallerLineNumber] int lineNumber = 0, 
+                            params object[] parameters)
         {
-            logger.Warning(message,parameters);
+            AddContext(callerName, sourceFile, lineNumber).Warning(message,parameters);
         }
 
-        public void LogDebug(string message, params object[] parameters)
+        public void LogDebug(string message, 
+                            [CallerMemberName] string callerName = "",
+                            [CallerFilePath] string sourceFile = "",
+                            [CallerLineNumber] int lineNumber = 0, 
+                            params object[] parameters)
         {
-            logger.Debug(message,parameters);
+            AddContext(callerName, sourceFile, lineNumber).Debug(message,parameters);
         }
 
-        public void LogInfo(string message,params object[] parameters)
+        public void LogInfo(string message,
+                            [CallerMemberName] string callerName = "",
+                            [CallerFilePath] string sourceFile = "",
+                            [CallerLineNumber] int lineNumber = 0,
+                            params object[] parameters)
         {
-            logger.Information(message, parameters);
+            AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
 
         #endregion
 
+        private Serilog.ILogger AddContext(string callerName , string sourceFile , int lineNumber)
+        {
+            return logger.ForContext("CallerName", callerName)
+                  .ForContext("SourceFile", sourceFile)
+                  .ForContext("LineNumber", lineNumber);
+        }
         public void Dispose()
         {
             logger.Dispose();

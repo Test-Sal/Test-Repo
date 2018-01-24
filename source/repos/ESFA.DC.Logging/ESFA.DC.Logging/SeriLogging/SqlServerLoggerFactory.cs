@@ -40,7 +40,15 @@ namespace ESFA.DC.Logging.SeriLogging
             //Set the aditional colum which we need to be added as part of logs table
             var columnOptions = new ColumnOptions();
             columnOptions.AdditionalDataColumns = new Collection<DataColumn>{
-                        new DataColumn { DataType = typeof(string), ColumnName = "ApplicationId" }
+                        new DataColumn { DataType = typeof(string), ColumnName = "ApplicationId" },
+                         new DataColumn { DataType = typeof(string), ColumnName = "MachineName" },
+                         new DataColumn { DataType = typeof(string), ColumnName = "ProcessName" },
+                         new DataColumn { DataType = typeof(string), ColumnName = "ThreadId" },
+                         new DataColumn { DataType = typeof(string), ColumnName = "CallerName" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "SourceFile" },
+                        new DataColumn { DataType = typeof(int), ColumnName = "LineNumber" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "JobId" },
+
                     };
 
             //Remove the extra columns from appearing in the additional properties
